@@ -942,7 +942,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MyRigidbody: {fileID: 2050318706}
   friction: {x: -0.1, y: 0}
-  MoveSpeed: 10
+  MoveSpeed: 5
+  SpeedRun: 10
   JumpForce: 3
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

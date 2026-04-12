@@ -6,33 +6,42 @@ public class MovePlayer : MonoBehaviour
 {
     //This script is responsible for moving the player left and right.
     public Rigidbody2D MyRigidbody;
-    public Vector2 friction = new Vector2(.1f, 0);
-    public float MoveSpeed;
 
-    //This script is responsible for jumping the player.
-    public float JumpForce = 3;
+    public Vector2 friction = new Vector2(.1f, 0);
+
+    public float MoveSpeed;
+    public float SpeedRun; //This script is responsible for making the player run
+
+    public float JumpForce = 3; //This script is responsible for jumping the player.
+
+    private float _currentSpeed;
 
     private void Update()
     {
-        HandleMovement();
         HandleJump();
+        HandleMoviment(); 
     }
 
     //This method handles the movement of the player left and right.
     //Este método lida com o movimento do jogador para a esquerda e para a direita.
-    private void HandleMovement()
+    private void HandleMoviment()
     {
+        if (Input.GetKey(KeyCode.LeftShift))
+            _currentSpeed = SpeedRun;
+        else
+            _currentSpeed = MoveSpeed;
+            
         if (Input.GetKey(KeyCode.A))
         {
             //Move the player to the left
             //MyRigidbody.MovePosition(MyRigidbody.position - Velocity * Time.deltaTime);
-            MyRigidbody.velocity = new Vector2(-MoveSpeed, MyRigidbody.velocity.y);
+            MyRigidbody.velocity = new Vector2(-_currentSpeed, MyRigidbody.velocity.y);
         }
         else if (Input.GetKey(KeyCode.D))
         {
             //Move the player to the right
             //MyRigidbody.MovePosition(MyRigidbody.position + Velocity * Time.deltaTime);
-            MyRigidbody.velocity = new Vector2(MoveSpeed, MyRigidbody.velocity.y);
+            MyRigidbody.velocity = new Vector2(_currentSpeed, MyRigidbody.velocity.y);
         }
 
         //Apply friction to slow down the player when they are not pressing any movement keys
