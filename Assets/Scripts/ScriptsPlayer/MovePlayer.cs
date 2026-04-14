@@ -1,18 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class MovePlayer : MonoBehaviour
 {
     //This script is responsible for moving the player left and right.
     public Rigidbody2D MyRigidbody;
 
+    [Header("Speed Setup")]
     public Vector2 friction = new Vector2(.1f, 0);
-
     public float MoveSpeed;
     public float SpeedRun; //This script is responsible for making the player run
-
     public float JumpForce = 3; //This script is responsible for jumping the player.
+
+    [Header("Animation Setup")]
+    public float jumpScaleY = 1.5f; //This script is responsible for scaling the player when they jump
+    public float jumpScaleX = 0.8f; //This script is responsible for scaling the player when they jump
+    public float animationDuration = 0.3f; //This script is responsible for the duration of the jump animation
+    public Ease ease = Ease.OutBack; //This script is responsible for the easing of the jump animation
 
     private float _currentSpeed;
 
@@ -63,6 +69,17 @@ public class MovePlayer : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             MyRigidbody.velocity = Vector2.up * JumpForce;
+            MyRigidbody.transform.localScale = Vector3.one; //Reset the scale to normal before applying the jump animation
+
+            DOTween.Kill(MyRigidbody.transform); //Kill any existing tweens on the player's transform to prevent conflicts
+
+            HandleScaleJump();
         }
+    }
+
+    private void HandleScaleJump()
+    {
+        MyRigidbody.transform.DOScaleY(jumpScaleY, animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(ease);
+        MyRigidbody.transform.DOScaleX(jumpScaleX, animationDuration).SetLoops(2, LoopType.Yoyo).SetEase(ease);
     }
 }
