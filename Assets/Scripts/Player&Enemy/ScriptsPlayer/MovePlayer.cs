@@ -20,6 +20,11 @@ public class MovePlayer : MonoBehaviour
     public float animationDuration = 0.3f; //This script is responsible for the duration of the jump animation
     public Ease ease = Ease.OutBack; //This script is responsible for the easing of the jump animation
 
+    [Header ("Animation player")]
+    public string boolRun = "Run"; //This script is responsible for the trigger that makes the player run in the animator
+    public Animator animator; //This script is responsible for the animator of the player
+    public float playerSwipeDuration = .1f;
+
     private float _currentSpeed;
 
     private void Update()
@@ -40,14 +45,27 @@ public class MovePlayer : MonoBehaviour
         if (Input.GetKey(KeyCode.A))
         {
             //Move the player to the left
-            //MyRigidbody.MovePosition(MyRigidbody.position - Velocity * Time.deltaTime);
-            MyRigidbody.velocity = new Vector2(-_currentSpeed, MyRigidbody.velocity.y);
+            MyRigidbody.velocity = new Vector2(-_currentSpeed, MyRigidbody.velocity.y); //Set the velocity to move the player to the left
+            if (MyRigidbody.transform.localScale.x != -1) //Check if the player is not already facing left
+            {
+                MyRigidbody.transform.DOScaleX(-1, playerSwipeDuration); //Flip the player to face left with a smooth animation 
+            }
+
+                animator.SetBool(boolRun, true); //Set the trigger to make the player run in the animator
         }
         else if (Input.GetKey(KeyCode.D))
         {
             //Move the player to the right
-            //MyRigidbody.MovePosition(MyRigidbody.position + Velocity * Time.deltaTime);
             MyRigidbody.velocity = new Vector2(_currentSpeed, MyRigidbody.velocity.y);
+            if (MyRigidbody.transform.localScale.x != 1) //Check if the player is not already facing right
+            {
+                MyRigidbody.transform.DOScaleX(1, playerSwipeDuration); //Flip the player to face right with a smooth animation 
+            }
+            animator.SetBool(boolRun, true); //Set the trigger to make the player run in the animator
+        }
+        else
+        {
+            animator.SetBool(boolRun, false); //Reset the trigger to stop the player from running in the animator
         }
 
         //Apply friction to slow down the player when they are not pressing any movement keys
