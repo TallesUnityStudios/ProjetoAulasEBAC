@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class HealthBase : MonoBehaviour
 {
+    public Action OnKill; //This event is responsible for notifying when the player or enemy is killed.
+
     public int startlife = 100; //This script is responsible for handling the health of the player and enemies.
 
     public bool destroyOnDeath = false; //This variable is responsible for determining whether the player or enemy should be destroyed when they die.
@@ -52,5 +55,6 @@ public class HealthBase : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        OnKill?.Invoke();
     }
 }
