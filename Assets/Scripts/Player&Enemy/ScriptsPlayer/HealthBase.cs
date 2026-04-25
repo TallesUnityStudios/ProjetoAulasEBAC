@@ -11,9 +11,15 @@ public class HealthBase : MonoBehaviour
     private int _currentLife; //This variable is responsible for storing the current health of the player and enemies.
     private bool _isDead; //This variable is responsible for storing whether the player or enemy is dead or not.
 
+    [SerializeField]private FlashColor _flashColor; //This variable is responsible for storing the FlashColor component of the player and enemies.
+
     private void Awake()
     {
         _currentLife = startlife;
+        if (_flashColor == null)
+        {
+            _flashColor = GetComponent<FlashColor>();
+        }   
     }
 
     private void Init()
@@ -30,6 +36,11 @@ public class HealthBase : MonoBehaviour
         if (_currentLife <= 0)
         {
             Die();
+        }
+
+        if (_flashColor != null)
+        {
+            _flashColor.Flash();
         }
     }
 
